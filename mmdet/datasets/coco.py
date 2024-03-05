@@ -559,9 +559,9 @@ class CocoDataset(CustomDataset):
                  metric='bbox',
                  logger=None,
                  jsonfile_prefix=None,
-                 classwise=False,
+                 classwise=True,
                  proposal_nums=(100, 300, 1000),
-                 iou_thrs=None,
+                 iou_thrs=[0.5],
                  metric_items=None):
         """Evaluation in COCO protocol.
 
