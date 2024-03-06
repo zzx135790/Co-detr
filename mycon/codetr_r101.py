@@ -189,7 +189,7 @@ custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 load_from = None
-resume_from = 'work_dirs/codetr_r101/latest.pth'
+resume_from = None
 workflow = [('train', 1)]
 opencv_num_threads = 0
 mp_start_method = 'fork'
