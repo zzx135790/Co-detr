@@ -72,8 +72,8 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=1,
-    workers_per_gpu=2,
+    samples_per_gpu=2,
+    workers_per_gpu=1,
     train=dict(
         type='CocoDataset',
         ann_file='/mnt/data/annotations/train.json',
@@ -193,7 +193,7 @@ resume_from = None
 workflow = [('train', 1)]
 opencv_num_threads = 0
 mp_start_method = 'fork'
-auto_scale_lr = dict(enable=False, base_batch_size=16)
+auto_scale_lr = dict(enable=False, base_batch_size=2)
 num_dec_layer = 6
 lambda_2 = 2.0
 model = dict(
