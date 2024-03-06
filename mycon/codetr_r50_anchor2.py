@@ -72,7 +72,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=1,
+    samples_per_gpu=2,
     workers_per_gpu=1,
     train=dict(
         type='CocoDataset',
@@ -425,7 +425,7 @@ model = dict(
     ])
 optimizer = dict(
     type='AdamW',
-    lr=0.00005,
+    lr=0.0001,
     weight_decay=0.0005,
     paramwise_cfg=dict(
         custom_keys=dict(
@@ -441,6 +441,6 @@ lr_config = dict(
     warmup_iters=200,
     warmup_ratio=0.001)
 runner = dict(type='EpochBasedRunner', max_epochs=12)
-work_dir = './work_dirs/codetr_r101_a2'
+work_dir = './work_dirs/codetr_r50'
 auto_resume = False
 gpu_ids = [0]

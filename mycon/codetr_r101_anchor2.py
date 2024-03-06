@@ -72,7 +72,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=2,
+    samples_per_gpu=1,
     workers_per_gpu=1,
     train=dict(
         type='CocoDataset',
@@ -426,7 +426,7 @@ model = dict(
     ])
 optimizer = dict(
     type='AdamW',
-    lr=0.0001,
+    lr=0.00005,
     weight_decay=0.0005,
     paramwise_cfg=dict(
         custom_keys=dict(
