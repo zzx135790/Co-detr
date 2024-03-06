@@ -430,6 +430,6 @@ lr_config = dict(
     warmup_iters=200,
     warmup_ratio=0.001)
 runner = dict(type='EpochBasedRunner', max_epochs=12)
-work_dir = './work_dirs/codetr_r50_size'
+work_dir = './work_dirs/codetr_r101_a2_size'
 auto_resume = False
 gpu_ids = [0]
