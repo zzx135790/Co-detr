@@ -310,7 +310,8 @@ model = dict(
                     type='RoIAlign', output_size=7, sampling_ratio=0),
                 out_channels=256,
                 featmap_strides=[4, 8, 16, 32, 64],
-                finest_scale=56),
+                finest_scale=56,
+                global_context=True),
             bbox_head=dict(
                 type='Shared2FCBBoxHead',
                 in_channels=256,

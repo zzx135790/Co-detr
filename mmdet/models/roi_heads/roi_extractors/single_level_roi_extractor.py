@@ -28,10 +28,15 @@ class SingleRoIExtractor(BaseRoIExtractor):
                  out_channels,
                  featmap_strides,
                  finest_scale=56,
-                 init_cfg=None):
+                 init_cfg=None,
+                 global_context=False):
         super(SingleRoIExtractor, self).__init__(roi_layer, out_channels,
                                                  featmap_strides, init_cfg)
         self.finest_scale = finest_scale
+        self.global_context = global_context
+        self.gcpool = torch.nn.AdaptiveAvgPool2d(7)
+
+
 
     def map_roi_levels(self, rois, num_levels):
         """Map rois to corresponding feature levels by scales.
@@ -78,6 +83,11 @@ class SingleRoIExtractor(BaseRoIExtractor):
                 return roi_feats
             return self.roi_layers[0](feats[0], rois)
 
+        if self.global_context:
+            gc_context = []
+            for feat in feats:
+                gc_context.append(self.gcpool(feat))
+
         target_lvls = self.map_roi_levels(rois, num_levels)
 
         if roi_scale_factor is not None:
@@ -101,6 +111,9 @@ class SingleRoIExtractor(BaseRoIExtractor):
             if inds.numel() > 0:
                 rois_ = rois[inds]
                 roi_feats_t = self.roi_layers[i](feats[i], rois_)
+                if self.global_context:
+                    for j in range(feats[0].shape[0]):
+                        roi_feats_t[rois_[:, 0] == j] += gc_context[i][j]  # 加上全局上下文
                 roi_feats[inds] = roi_feats_t
             else:
                 # Sometimes some pyramid levels will not be used for RoI
