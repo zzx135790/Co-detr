@@ -179,14 +179,14 @@ data = dict(
                     dict(type='Collect', keys=['img'])
                 ])
         ]))
-evaluation = dict(interval=1, metric='bbox')
+evaluation = dict(interval=1, metric='bbox', save_best='auto')
 checkpoint_config = dict(interval=1)
 log_config = dict(interval=100, hooks=[dict(type='TextLoggerHook')])
 custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 load_from = None
-resume_from = 'work_dirs/swin-t/latest.pth'
+resume_from = 'work_dirs/swin-b/latest.pth'
 workflow = [('train', 1)]
 opencv_num_threads = 0
 mp_start_method = 'fork'
@@ -197,19 +197,19 @@ model = dict(
     type='CoDETR',
     backbone=dict(
         type='SwinTransformerV1',
-        embed_dim=96,
-        depths=[2, 2, 6, 2],
-        num_heads=[3, 6, 12, 24],
+        embed_dim=128,
+        depths=[2, 2, 18, 2],
+        num_heads=[4, 8, 16, 32],
         out_indices=(1, 2, 3),
-        window_size=7,
+        window_size=12,
         ape=False,
         drop_path_rate=0.2,
         patch_norm=True,
         use_checkpoint=False,
-        pretrained=None),
+        pretrained='models/swin_base.pth'),
     neck=dict(
         type='ChannelMapper',
-        in_channels=[192, 384, 768],
+        in_channels=[256, 512, 1024],
         kernel_size=1,
         out_channels=256,
         act_cfg=None,
@@ -420,7 +420,7 @@ model = dict(
     ])
 optimizer = dict(
     type='AdamW',
-    lr=0.0002,
+    lr=0.0002/4,
     weight_decay=0.05,
     paramwise_cfg=dict(
         custom_keys=dict(
@@ -428,9 +428,15 @@ optimizer = dict(
             sampling_offsets=dict(lr_mult=0.1),
             reference_points=dict(lr_mult=0.1))))
 optimizer_config = dict(grad_clip=dict(max_norm=0.1, norm_type=2))
-lr_config = dict(policy='step', step=[4, 8])
+lr_config = dict(
+    policy='CosineAnnealing',
+    min_lr=1e-08,
+    by_epoch=False,
+    warmup='linear',
+    warmup_iters=200,
+    warmup_ratio=0.001)
 runner = dict(type='EpochBasedRunner', max_epochs=12)
 pretrained = None
-work_dir = 'work_dirs/swin-t'
+work_dir = 'work_dirs\swin-b'
 auto_resume = False
 gpu_ids = [0]
