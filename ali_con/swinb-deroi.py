@@ -206,7 +206,7 @@ model = dict(
         drop_path_rate=0.2,
         patch_norm=True,
         use_checkpoint=False,
-        pretrained='https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwidvYbmq-uEAxXsAjQIHT8YA-YQFnoECBAQAQ&url=https%3A%2F%2Fgithub.com%2FSwinTransformer%2Fstorage%2Freleases%2Fdownload%2Fv1.0.0%2Fswin_base_patch4_window12_384_22k.pth&usg=AOvVaw1lLY5_b8F-qQ7xYf-Mp7n2&opi=89978449'),
+        pretrained='https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window12_384_22k.pth'),
     neck=dict(
         type='ChannelMapper',
         in_channels=[256, 512, 1024],
